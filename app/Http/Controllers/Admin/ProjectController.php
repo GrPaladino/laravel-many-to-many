@@ -73,7 +73,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
 
-        if ($project->user_id != Auth::id())
+        if ($project->user_id != Auth::id() && Auth::user()->role != 'admin')
             abort(403);
 
 
@@ -90,7 +90,8 @@ class ProjectController extends Controller
 
         $technologies = Technology::all();
 
-        if ($project->user_id != Auth::id())
+        if ($project->user_id != Auth::id() && Auth::user()->role != 'admin')
+
             abort(403);
 
         $types = Type::all();
@@ -108,7 +109,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        if ($project->user_id != Auth::id())
+        if ($project->user_id != Auth::id() && Auth::user()->role != 'admin')
+
             abort(403);
 
         $request->validated();
