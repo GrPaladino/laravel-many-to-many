@@ -20,34 +20,50 @@
             <div class="row">
 
                 <div class="col-6">
-                    <label for="title" class="form-label">Titolo: </label>
-                    <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ empty($project->id) ? '' : old('title') ?? $project->title }}" required max="50" />
-                    @error('title')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                    <div class="col-12">
+                        <label for="title" class="form-label">Titolo: </label>
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ empty($project->id) ? '' : old('title') ?? $project->title }}" required max="50" />
+                        @error('title')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
-                    @enderror
+
+                    <div class="col-12">
+                        <label for="type_id" class="form-label">Tipologia: </label>
+                        <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
+
+
+                            <option class="d-none" value=''>Scegli la tipologia</option>
+
+                            @foreach ($types as $type)
+
+                            <option value="{{ $type->id }}" @if (old('type_id') ?? $project->type_id == $type->id) selected @endif>{{ $type->label }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('type_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="col-6">
-                    <label for="type_id" class="form-label">Tipologia: </label>
-                    <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
-
-
-                        <option class="d-none" value=''>Scegli la tipologia</option>
-
-                        @foreach ($types as $type)
-
-                        <option value="{{ $type->id }}" @if (old('type_id') ?? $project->type_id == $type->id) selected @endif>{{ $type->label }}</option>
+                    <p class="mb-1">Tecnologie:</p>
+                    <div class="d-flex flex-wrap">
+                        @foreach($technologies as $technology)
+                        <div class="col-4 mb-1">
+                            <label class="form-check-label" for="technology-{{$technology->id}}">{{$technology->label}}</label>
+                            <input {{ in_array($technology->id, old('technologies', $project_technologies_id ?? [])) ? 'checked' : '' }} class="form-check-input" type="checkbox" value="{{$technology->id}}" id="technology-{{$technology->id}}" name="technologies[]">
+                        </div>
                         @endforeach
-                    </select>
-
-                    @error('type_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
                     </div>
-                    @enderror
                 </div>
+
+
             </div>
 
             <label for="github_url" class="form-label">Github: </label>

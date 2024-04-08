@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,8 +37,10 @@ class ProjectController extends Controller
      */
     public function create(Project $project)
     {
+        $technologies = Technology::all();
         $types = Type::all();
-        return view('admin.projects.form', compact('project', 'types'));
+
+        return view('admin.projects.form', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -54,6 +58,10 @@ class ProjectController extends Controller
         $project->user_id = Auth::id();
         $project->save();
 
+        if (Arr::exists($data, 'technologies')) {
+            $project->technologies()->sync($data['technologies']);
+        }
+
         return redirect()->route('admin.projects.show', compact('project'))->with('message-class', 'alert-success')->with('message', 'Progetto inserito correttamente.');
     }
 
@@ -68,6 +76,7 @@ class ProjectController extends Controller
         if ($project->user_id != Auth::id())
             abort(403);
 
+
         return view('admin.projects.show', compact('project'));
     }
 
@@ -78,11 +87,17 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+
+        $technologies = Technology::all();
+
         if ($project->user_id != Auth::id())
             abort(403);
 
         $types = Type::all();
-        return view('admin.projects.form', compact('project', 'types'));
+
+        $project_technologies_id = $project->technologies->pluck('id')->toArray();
+
+        return view('admin.projects.form', compact('project', 'types', 'technologies', 'project_technologies_id'));
     }
 
     /**
@@ -99,6 +114,12 @@ class ProjectController extends Controller
         $request->validated();
         $data = $request->all();
         $project->update($data);
+
+        if (Arr::exists($data, 'technologies')) {
+            $project->technologies()->sync($data['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
         return redirect()->route('admin.projects.show', $project)->with('message-class', 'alert-success')->with('message', 'Progetto modificato correttamente.');
     }
 

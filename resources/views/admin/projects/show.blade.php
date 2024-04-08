@@ -21,6 +21,15 @@
             <div class="description">
                 <p class="card-text">{{$project->description}}</p>
                 <p><strong>Tipologia: </strong>{!! $project->type ? $project->type->getBadge() : 'Nessuna tipologia' !!}</p>
+                <p><strong>Tecnologie utilizzate: </strong>
+
+                    @forelse($project->technologies as $technology)
+                    {!! $technology->getBadge() !!}
+                    @empty
+                    <p>Nessuna tecnologia</p>
+                    @endforelse
+
+                </p>
             </div>
             <div class="links text-start">
                 <a href="{{$project->github_url}}" class="mb-3"><i class="fa-brands fa-github link-dark fa-2xl me-3"></i></a>
