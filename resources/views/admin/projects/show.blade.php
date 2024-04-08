@@ -7,7 +7,7 @@
 
     <a href="{{route('admin.projects.index')}}" class="btn btn-primary my-3 fs-4">Torna alla lista</a>
 
-
+    {{-- @dd($project) --}}
 
 
     <h2 class="card-title fs-1 mt-3">{{$project->title}}</h2>
@@ -28,8 +28,8 @@
                     @empty
                     <p>Nessuna tecnologia</p>
                     @endforelse
-
                 </p>
+
             </div>
             <div class="links text-start">
                 <a href="{{$project->github_url}}" class="mb-3"><i class="fa-brands fa-github link-dark fa-2xl me-3"></i></a>

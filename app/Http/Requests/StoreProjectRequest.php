@@ -30,7 +30,8 @@ class StoreProjectRequest extends FormRequest
             "github_url" => "nullable|string|max:150",
             "image_preview" => "nullable|string|max:150",
             'type_id' => ['nullable', 'exists:types,id'],
-            'technology' => ['required', 'exists:technology,id']
+            'technologies' => 'required' | 'exists:technologies,id'
+
 
         ];
     }
@@ -52,7 +53,7 @@ class StoreProjectRequest extends FormRequest
 
             'type.exists' => 'La tipologia inserita non è valida',
 
-            'technology.exists' => 'La tecnologia inserita non è valida'
+            'technologies.required' => 'La tecnologia è obbligatoria'
 
         ];
     }
