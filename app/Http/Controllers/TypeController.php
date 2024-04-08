@@ -15,8 +15,11 @@ class TypeController extends Controller
      */
     public function index()
     {
+
+        $projects = Project::all();
+
         $types = Type::paginate(10);
-        return view('admin.types.index', compact('types'));
+        return view('admin.types.index', compact('types', 'projects'));
     }
 
     /**
@@ -58,7 +61,16 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        return view('admin.types.show', compact('type'));
+
+        if (Auth::user()->role != 'admin') {
+            $projects = Project::where('user_id', '=', Auth::user()->id)->paginate(10);
+        } else {
+            $projects = Project::paginate(10);
+
+        }
+
+
+        return view('admin.types.show', compact('type', 'projects'));
 
     }
 

@@ -27,6 +27,44 @@
 
     </ul>
     @endif
+
+    <div class="projects-related mt-3">
+        <h2>Progetti affiliati</h2>
+
+        <table class="table">
+            <thead>
+                <th>ID</th>
+                <th>Titolo</th>
+
+                @if(auth()->user()->role == 'admin')
+                <th>Autore</th>
+                @endif
+
+                <th>Estratto</th>
+                <th></th>
+            </thead>
+
+            <tbody>
+                @foreach($projects as $project)
+
+                <tr>
+                    <td>{{$project->id}}</td>
+                    <td>{{$project->title}}</td>
+                    @if(auth()->user()->role == 'admin')
+                    <td>{{$project->user->name}}</td>
+                    @endif
+                    <td>{{$project->getAbstract(50)}}</td>
+                    <td>
+
+                    </td>
+                </tr>
+
+                @endforeach
+
+            </tbody>
+        </table>
+    </div>
+    {{$projects->links()}}
 </div>
 @endsection
 
