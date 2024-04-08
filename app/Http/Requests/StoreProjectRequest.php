@@ -29,7 +29,8 @@ class StoreProjectRequest extends FormRequest
             "description" => "nullable|string",
             "github_url" => "nullable|string|max:150",
             "image_preview" => "nullable|string|max:150",
-            'type_id' => ['nullable', 'exists:types,id']
+            'type_id' => ['nullable', 'exists:types,id'],
+            'technology' => ['required', 'exists:technology,id']
 
         ];
     }
@@ -49,7 +50,9 @@ class StoreProjectRequest extends FormRequest
 
             'image_preview.string' => "L'url deve massimo di 150 caratteri",
 
-            'type.exists' => 'La tipologia inserita non è valida'
+            'type.exists' => 'La tipologia inserita non è valida',
+
+            'technology.exists' => 'La tecnologia inserita non è valida'
 
         ];
     }
