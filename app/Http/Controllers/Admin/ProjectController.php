@@ -23,7 +23,7 @@ class ProjectController extends Controller
         $projects = Project::paginate(10);
 
         if (Auth::user()->role != 'admin') {
-            $projects->where('user_id', Auth::id());
+            $projects = Project::where('user_id', Auth::id())->paginate(10);
         }
 
 
