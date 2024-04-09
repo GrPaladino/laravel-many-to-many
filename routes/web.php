@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Guest\DashboardController as GuestDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\TypeController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware('auth')
 
     Route::resource('projects', ProjectController::class);
     Route::resource('types', TypeController::class);
+    Route::resource('technologies', TechnologyController::class);
   });
 
 require __DIR__ . '/auth.php';
