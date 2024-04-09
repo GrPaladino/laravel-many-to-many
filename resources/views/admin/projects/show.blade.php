@@ -23,11 +23,10 @@
                 <p><strong>Tipologia: </strong>{!! $project->type ? $project->type->getBadge() : 'Nessuna tipologia' !!}</p>
                 <p><strong>Tecnologie utilizzate: </strong>
 
-                    @forelse($project->technologies as $technology)
-                    {!! $technology->getBadge() !!}
-                    @empty
-                    <p>Nessuna tecnologia</p>
-                    @endforelse
+                    @foreach($project->technologies as $technology)
+
+                    {!! $technology ? $technology->getBadge() : 'Nessuna tecnologia' !!}
+                    @endforeach
                 </p>
 
             </div>

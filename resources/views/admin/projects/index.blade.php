@@ -20,6 +20,7 @@
 
 
                 <th>Tipologia</th>
+                <th>Tecnologie</th>
                 <th>Estratto</th>
                 <th></th>
             </thead>
@@ -33,6 +34,15 @@
                     <td>{{$project->user->name}}</td>
                     @endif
                     <td>{!! $project->type ? $project->type->getBadge() : 'Nessuna tipologia' !!}</td>
+
+                    <td>
+                        @forelse($project->technologies as $technology)
+                        {!! $technology->getBadge() !!}
+                        @empty
+                        <p>Nessuna tecnologia</p>
+                        @endforelse
+                    </td>
+
                     <td>{{$project->getAbstract(50)}}</td>
                     <td>
                         <a href="{{$project->github_url}}"><i class="fa-brands fa-github  link-dark me-2"></i></a>
