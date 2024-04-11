@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Mail\CreateProjectMail;
+use App\Mail\DeleteProjectMail;
+use App\Mail\UpdateProjectMail;
 use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,6 +72,8 @@ class ProjectController extends Controller
         if (Arr::exists($data, 'technologies')) {
             $project->technologies()->sync($data['technologies']);
         }
+
+        Mail::to('admin@gmail.com')->send(new CreateProjectMail($project, Auth::user()));
 
         return redirect()->route('admin.projects.show', compact('project'))->with('message-class', 'alert-success')->with('message', 'Progetto inserito correttamente.');
     }
@@ -140,6 +146,9 @@ class ProjectController extends Controller
         } else {
             $project->technologies()->detach();
         }
+
+        Mail::to('admin@gmail.com')->send(new UpdateProjectMail($project, Auth::user()));
+
         return redirect()->route('admin.projects.show', $project)->with('message-class', 'alert-success')->with('message', 'Progetto modificato correttamente.');
     }
 
@@ -158,6 +167,9 @@ class ProjectController extends Controller
         }
 
         $project->delete();
+
+        Mail::to('admin@gmail.com')->send(new DeleteProjectMail($project, Auth::user()));
+
         return redirect()->route('admin.projects.index')->with('message-class', 'alert-danger')->with('message', 'Progetto eliminato correttamente.');
     }
 }
