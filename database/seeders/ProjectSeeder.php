@@ -31,7 +31,7 @@ class ProjectSeeder extends Seeder
             $project->slug = Str::slug($project->title);
             $project->description = $faker->paragraph(3, true);
             $project->github_url = 'https://github.com/GrPaladino';
-            $project->image_preview = 'https://picsum.photos/200/300';
+            $project->image = 'https://picsum.photos/200/300';
             $project->save();
         }
 

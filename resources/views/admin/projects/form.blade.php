@@ -23,7 +23,7 @@
 
 
     <h1 class="my-3">{{empty($project->id) ? "Crea Progetto" : "Modifica Progetto"}}</h1>
-    <form action="{{ empty($project->id) ? route('admin.projects.store') : route('admin.projects.update', $project) }}" method="POST">
+    <form enctype="multipart/form-data" action="{{ empty($project->id) ? route('admin.projects.store') : route('admin.projects.update', $project) }}" method="POST">
         @csrf
         @if($project->id)
         @method('PUT')
@@ -31,7 +31,7 @@
         <div class="row">
 
             <div class="col-6">
-                <div class="col-12">
+                <div>
                     <label for="title" class="form-label">Titolo: </label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ empty($project->id) ? '' : old('title') ?? $project->title }}" required max="50" />
                     @error('title')
@@ -41,7 +41,7 @@
                     @enderror
                 </div>
 
-                <div class="col-12">
+                <div class="mt-2">
                     <label for="type_id" class="form-label">Tipologia: </label>
                     <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
 
@@ -60,46 +60,49 @@
                     </div>
                     @enderror
                 </div>
+
+                <div class="mt-2">
+                    <label for="github_url" class="form-label">Github: </label>
+                    <input type="url" class="form-control @error('github_url') is-invalid @enderror" id="github_url" name="github_url" value="{{ empty($project->id) ? '' : old("github_url") ?? $project->github_url }}" />
+                    @error('github_url')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
             </div>
 
             <div class="col-6">
-                <p class="mb-1">Tecnologie:</p>
-                <div class="d-flex flex-wrap @error('technologies') is-invalid @enderror">
-                    @foreach($technologies as $technology)
-                    <div class="col-4 mb-1">
-                        <label class="form-check-label" for=" technology-{{$technology->id}}">{{$technology->label}}</label>
-                        <input {{ in_array($technology->id, old('technologies', $project_technologies_id ?? [])) ? 'checked' : '' }} class="form-check-input @error('technologies') is-invalid @enderror" type="checkbox" value="{{$technology->id}}" id="technology-{{$technology->id}}" name="technologies[]">
+                <div class="tech">
+                    <p class="mb-1">Tecnologie:</p>
+                    <div class="d-flex flex-wrap @error('technologies') is-invalid @enderror">
+                        @foreach($technologies as $technology)
+                        <div class="col-4 mb-1">
+                            <label class="form-check-label" for=" technology-{{$technology->id}}">{{$technology->label}}</label>
+                            <input {{ in_array($technology->id, old('technologies', $project_technologies_id ?? [])) ? 'checked' : '' }} class="form-check-input @error('technologies') is-invalid @enderror" type="checkbox" value="{{$technology->id}}" id="technology-{{$technology->id}}" name="technologies[]">
+                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
+                    @error('technologies')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
-                @error('technologies')
-                <div class="invalid-feedback">
-                    {{ $message }}
+
+                <div class="img mt-3">
+                    <label for="image" class="form-label">Immagine: </label>
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" value="{{ empty($project->id) ? '' : old("image") ?? $project->image }}" />
+                    @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
-                @enderror
             </div>
 
 
         </div>
-
-        <label for="github_url" class="form-label">Github: </label>
-        <input type="url" class="form-control @error('github_url') is-invalid @enderror" id="github_url" name="github_url" value="{{ empty($project->id) ? '' : old("github_url") ?? $project->github_url }}" />
-        @error('github_url')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-
-        <label for="image_preview" class="form-label">Immagine: </label>
-        <input type="url" class="form-control @error('image_preview') is-invalid @enderror" id="image_preview" name="image_preview" value="{{ empty($project->id) ? '' : old("image_preview") ?? $project->image_preview }}" />
-        @error('image_preview')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-
-
-
 
         <label for="description" class="form-label">Descrizione: </label>
         <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4">{{ empty($project->id) ? '' : old("description") ?? $project->description }}</textarea>

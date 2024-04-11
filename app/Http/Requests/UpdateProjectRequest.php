@@ -30,7 +30,8 @@ class UpdateProjectRequest extends FormRequest
             "github_url" => "nullable|string|max:150",
             "image_preview" => "nullable|string|max:150",
             'type_id' => ['nullable', 'exists:types,id'],
-            'technologies' => ['required', 'exists:technologies,id']
+            'technologies' => ['required', 'exists:technologies,id'],
+
         ];
     }
 
@@ -53,7 +54,8 @@ class UpdateProjectRequest extends FormRequest
 
             'technologies.required' => 'La tecnologia è obbligatoria',
 
-            'technologies.exists' => 'La tecnologia inserita non è valida'
+            'technologies.exists' => 'La tecnologia inserita non è valida',
+
 
 
         ];

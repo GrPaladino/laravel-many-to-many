@@ -11,6 +11,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
@@ -56,6 +57,12 @@ class ProjectController extends Controller
         $project = new Project;
         $project->fill($data);
         $project->user_id = Auth::id();
+
+        if (Arr::exists($data, 'image')) {
+            $img_path = Storage::put('upload/projects', $data['image']);
+            $project->image = $img_path;
+        }
+
         $project->save();
 
         if (Arr::exists($data, 'technologies')) {
@@ -115,7 +122,18 @@ class ProjectController extends Controller
 
         $request->validated();
         $data = $request->all();
+
+
+        if (!empty($project->image)) {
+            Storage::delete($project->image);
+
+            $img_path = Storage::put('upload/projects', $data['image']);
+            $project->image = $img_path;
+
+        }
         $project->update($data);
+
+
 
         if (Arr::exists($data, 'technologies')) {
             $project->technologies()->sync($data['technologies']);
@@ -134,6 +152,10 @@ class ProjectController extends Controller
     {
         if (Auth::user()->role != "admin")
             abort(403);
+
+        if (!empty($project->image)) {
+            Storage::delete($project->image);
+        }
 
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message-class', 'alert-danger')->with('message', 'Progetto eliminato correttamente.');

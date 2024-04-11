@@ -14,7 +14,7 @@
     <div class="d-flex mt-5">
 
         <div class="img me-5" style="width: 18rem;">
-            <img src="{{$project->image_preview}}" class="card-img-top" alt="{{$project->image_preview}}">
+            <img src="{{ asset('storage/' . $project->image)}}" class="card-img-top" alt="{{$project->image}}">
         </div>
         <div class="card-body d-flex flex-column justify-content-between">
 

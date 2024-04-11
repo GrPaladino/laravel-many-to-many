@@ -28,11 +28,9 @@ class StoreProjectRequest extends FormRequest
             'slug' => "nullable|string|max:50",
             "description" => "nullable|string",
             "github_url" => "nullable|string|max:150",
-            "image_preview" => "nullable|string|max:150",
             'type_id' => ['nullable', 'exists:types,id'],
-            'technologies' => ['required', 'exists:technologies,id']
-
-
+            'technologies' => ['required', 'exists:technologies,id'],
+            "image" => "nullable|image",
         ];
     }
 
